@@ -1,0 +1,9 @@
+.selected {
+    background: #3d5a80;
+}
+
+.list_item {
+    height: 3;
+    content-align: left middle;
+    padding: 1 2;
+}
