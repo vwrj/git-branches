@@ -26,7 +26,7 @@ class Branches(Container):
         for a in raw:
             b = a.strip()
             if b:
-                self.BRANCHES.append(b)
+                self.BRANCHES.append(b.replace('* ', ''))
 
     def compose(self) -> ComposeResult:
         self.fetch_recent_git_branches(10) 
