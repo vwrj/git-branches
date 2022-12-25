@@ -42,6 +42,10 @@ class GitBranchApp(App):
     """A Textual app to view recent git branches and choose one to check out"""
 
     CSS_PATH = "gitbranch.css"
+    BINDINGS = [("j", "next_item", "Move down"),
+                ("k", "prev_item", "Move up"),
+                ("enter", "select_item", "Check out branch")
+                ]
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the App"""
@@ -49,7 +53,7 @@ class GitBranchApp(App):
         yield Footer()
         yield Branches(id="b")
 
-    def key_j(self) -> None:
+    def action_next_item(self) -> None:
         branch_list = self.query_one("#b")
         i = branch_list.INDEX
         length = len(branch_list.BRANCHES)
@@ -58,7 +62,7 @@ class GitBranchApp(App):
         branch_list.INDEX = (i + 1) % length
         self.query_one(f"#c-{branch_list.INDEX}").add_class("selected")
 
-    def key_k(self) -> None:
+    def action_prev_item(self) -> None:
         branch_list = self.query_one("#b")
         i = branch_list.INDEX
         length = len(branch_list.BRANCHES)
@@ -67,7 +71,7 @@ class GitBranchApp(App):
         branch_list.INDEX = (i + length - 1) % length
         self.query_one(f"#c-{branch_list.INDEX}").add_class("selected")
 
-    def key_enter(self) -> None:
+    def action_select_item(self) -> None:
         branch_list = self.query_one("#b")
         item = self.query_one(f"#c-{branch_list.INDEX}")
         out = check_output(('git', 'checkout', str(item.renderable))).decode('utf-8')
